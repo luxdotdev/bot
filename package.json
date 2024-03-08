@@ -1,0 +1,16 @@
+{
+  "name": "parsertime-bot",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prisma": "^5.10.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.2",
+    "discord.js": "^14.14.1"
+  }
+}

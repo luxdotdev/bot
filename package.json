@@ -1,9 +1,9 @@
 {
   "name": "parsertime-bot",
-  "module": "index.ts",
+  "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun db:init && bun index.ts",
+    "start": "bun db:init && bun src/index.ts",
     "db:init": "prisma db pull && prisma generate"
   },
   "devDependencies": {

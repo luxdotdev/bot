@@ -2,6 +2,10 @@
   "name": "parsertime-bot",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "start": "bun db:init && bun index.ts",
+    "db:init": "prisma db pull && prisma generate"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "prisma": "^5.10.2"

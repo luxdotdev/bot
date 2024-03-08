@@ -1,0 +1,567 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+    id                String  @id
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+
+    @@unique([provider, providerAccountId])
+    @@index([userId])
+}
+
+model DefensiveAssist {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(defensive_assist)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model DvaRemech {
+    id          Int       @id @default(autoincrement())
+    scrimId     Int
+    event_type  EventType @default(dva_remech)
+    match_time  Float
+    player_team String
+    player_name String
+    player_hero String
+    ultimate_id Int
+    MapDataId   Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model EchoDuplicateEnd {
+    id          Int       @id @default(autoincrement())
+    scrimId     Int
+    event_type  EventType @default(echo_duplicate_end)
+    match_time  Float
+    player_team String
+    player_name String
+    player_hero String
+    ultimate_id Int
+    MapDataId   Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model EchoDuplicateStart {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(echo_duplicate_start)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    ultimate_id     Int
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model HeroSpawn {
+    id               Int       @id @default(autoincrement())
+    scrimId          Int
+    event_type       EventType @default(hero_spawn)
+    match_time       Float
+    player_team      String
+    player_name      String
+    player_hero      String
+    previous_hero    Int?
+    hero_time_played Float
+    MapDataId        Int?
+
+    @@index([MapDataId])
+}
+
+model HeroSwap {
+    id               Int       @id @default(autoincrement())
+    scrimId          Int
+    event_type       EventType @default(hero_swap)
+    match_time       Float
+    player_team      String
+    player_name      String
+    player_hero      String
+    previous_hero    String
+    hero_time_played Float
+    MapDataId        Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model Kill {
+    id               Int       @id @default(autoincrement())
+    scrimId          Int
+    event_type       EventType @default(kill)
+    match_time       Float
+    attacker_team    String
+    attacker_name    String
+    attacker_hero    String
+    victim_team      String
+    victim_name      String
+    victim_hero      String
+    event_ability    String
+    event_damage     Int
+    is_critical_hit  String
+    is_environmental String
+    MapDataId        Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model Map {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime
+    scrimId   Int?
+
+    @@index([scrimId])
+}
+
+model MapData {
+    id        Int      @id @default(autoincrement())
+    scrimId   Int
+    userId    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime
+    mapId     Int?
+
+    @@index([mapId])
+    @@index([scrimId])
+}
+
+model MatchEnd {
+    id           Int       @id @default(autoincrement())
+    scrimId      Int
+    event_type   EventType @default(match_end)
+    match_time   Float
+    round_number Int
+    team_1_score Int
+    team_2_score Int
+    MapDataId    Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model MatchStart {
+    id          Int       @id @default(autoincrement())
+    scrimId     Int
+    event_type  EventType @default(match_start)
+    match_time  Float
+    map_name    String
+    map_type    MapType
+    team_1_name String
+    team_2_name String
+    MapDataId   Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model MercyRez {
+    id                 Int       @id @default(autoincrement())
+    scrimId            Int
+    event_type         EventType @default(mercy_rez)
+    match_time         Float
+    resurrecter_team   String
+    resurrecter_player String
+    resurrecter_hero   String
+    resurrectee_team   String
+    resurrectee_player String
+    resurrectee_hero   String
+    MapDataId          Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model ObjectiveCaptured {
+    id                      Int       @id @default(autoincrement())
+    scrimId                 Int
+    event_type              EventType @default(objective_captured)
+    match_time              Float
+    round_number            Int
+    capturing_team          String
+    objective_index         Int
+    control_team_1_progress Float
+    control_team_2_progress Float
+    match_time_remaining    Float
+    MapDataId               Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model ObjectiveUpdated {
+    id                       Int       @id @default(autoincrement())
+    scrimId                  Int
+    event_type               EventType @default(objective_updated)
+    match_time               Float
+    round_number             Int
+    previous_objective_index Int
+    current_objective_index  Int
+    MapDataId                Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model OffensiveAssist {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(offensive_assist)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model PayloadProgress {
+    id                       Int       @id @default(autoincrement())
+    scrimId                  Int
+    event_type               EventType @default(payload_progress)
+    match_time               Float
+    round_number             Int
+    capturing_team           String
+    objective_index          Int
+    payload_capture_progress Float
+    MapDataId                Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model PlayerStat {
+    id                           Int       @id @default(autoincrement())
+    scrimId                      Int
+    event_type                   EventType @default(player_stat)
+    match_time                   Float
+    round_number                 Int
+    player_team                  String
+    player_name                  String
+    player_hero                  String
+    eliminations                 Int
+    final_blows                  Int
+    deaths                       Int
+    all_damage_dealt             Float
+    barrier_damage_dealt         Float
+    hero_damage_dealt            Float
+    healing_dealt                Float
+    healing_received             Float
+    self_healing                 Float
+    damage_taken                 Float
+    damage_blocked               Float
+    defensive_assists            Int
+    offensive_assists            Int
+    ultimates_earned             Int
+    ultimates_used               Int
+    multikill_best               Int
+    multikills                   Int
+    solo_kills                   Int
+    objective_kills              Int
+    environmental_kills          Int
+    environmental_deaths         Int
+    critical_hits                Int
+    critical_hit_accuracy        Float
+    scoped_accuracy              Float
+    scoped_critical_hit_accuracy Float
+    scoped_critical_hit_kills    Int
+    shots_fired                  Int
+    shots_hit                    Int
+    shots_missed                 Int
+    scoped_shots                 Int
+    scoped_shots_hit             Int
+    weapon_accuracy              Float
+    hero_time_played             Float
+    MapDataId                    Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model PointProgress {
+    id                     Int       @id @default(autoincrement())
+    scrimId                Int
+    event_type             EventType @default(point_progress)
+    match_time             Float
+    round_number           Int
+    capturing_team         String
+    objective_index        Int
+    point_capture_progress Float
+    MapDataId              Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model RemechCharged {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(remech_charged)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    ultimate_id     Int
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model RoundEnd {
+    id                      Int       @id @default(autoincrement())
+    scrimId                 Int
+    event_type              EventType @default(round_end)
+    match_time              Float
+    round_number            Int
+    capturing_team          String
+    team_1_score            Int
+    team_2_score            Int
+    objective_index         Int
+    control_team_1_progress Float
+    control_team_2_progress Float
+    match_time_remaining    Float
+    MapDataId               Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model RoundStart {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(round_start)
+    match_time      Float
+    round_number    Int
+    capturing_team  String
+    team_1_score    Int
+    team_2_score    Int
+    objective_index Int
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model Scrim {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime
+    date      DateTime
+    teamId    Int?
+    creatorId String
+
+    @@index([teamId])
+}
+
+model Session {
+    id           String   @id
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+
+    @@index([userId])
+}
+
+model SetupComplete {
+    id                   Int       @id @default(autoincrement())
+    scrimId              Int
+    event_type           EventType @default(setup_complete)
+    match_time           Float
+    round_number         Int
+    match_time_remaining Float
+    MapDataId            Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model Team {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime
+    image     String?
+    ownerId   String
+}
+
+model TeamInviteToken {
+    id      Int      @id @default(autoincrement())
+    teamId  Int
+    email   String
+    token   String   @unique
+    expires DateTime
+}
+
+model TeamManager {
+    id     Int    @id @default(autoincrement())
+    teamId Int
+    userId String
+
+    @@unique([teamId, userId])
+    @@index([userId])
+}
+
+model UltimateCharged {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(ultimate_charged)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    ultimate_id     Int
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model UltimateEnd {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(ultimate_end)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    ultimate_id     Int
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model UltimateStart {
+    id              Int       @id @default(autoincrement())
+    scrimId         Int
+    event_type      EventType @default(ultimate_start)
+    match_time      Float
+    player_team     String
+    player_name     String
+    player_hero     String
+    hero_duplicated String
+    ultimate_id     Int
+    MapDataId       Int?
+
+    @@index([MapDataId])
+    @@index([scrimId])
+}
+
+model User {
+    id            String      @id
+    name          String?
+    email         String?     @unique
+    emailVerified DateTime?
+    image         String?
+    role          UserRole    @default(USER)
+    teamId        Int?
+    stripeId      String?     @unique
+    billingPlan   BillingPlan @default(FREE)
+
+    @@index([teamId])
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model TeamToUser {
+    A Int
+    B String
+
+    @@unique([A, B], map: "_TeamToUser_AB_unique")
+    @@index([B], map: "_TeamToUser_B_index")
+    @@map("_TeamToUser")
+}
+
+enum BillingPlan {
+    FREE
+    BASIC
+    PREMIUM
+}
+
+enum EventType {
+    defensive_assist
+    dva_remech
+    echo_duplicate_end
+    echo_duplicate_start
+    hero_spawn
+    hero_swap
+    kill
+    match_end
+    match_start
+    mercy_rez
+    objective_captured
+    objective_updated
+    offensive_assist
+    payload_progress
+    point_progress
+    player_stat
+    remech_charged
+    round_end
+    round_start
+    setup_complete
+    ultimate_charged
+    ultimate_end
+    ultimate_start
+}
+
+enum MapType {
+    Control
+    Escort
+    Flashpoint
+    Hybrid
+    Push
+}
+
+enum UserRole {
+    ADMIN
+    MANAGER
+    USER
+}
